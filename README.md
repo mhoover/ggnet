@@ -20,7 +20,7 @@ At a minimum, the `ggnet` function only needs a network object as input data; th
 ggnet(net)
 ```
 
-![Basic network graph](https://github.com/mhoover/ggnet/images/basic_graph.jpg 'Basic network graph')
+![Basic network graph](https://github.com/mhoover/ggnet/blob/master/images/basic_graph.jpg 'Basic network graph')
 
 However, there are a robust set of options to improve the aesthetics of the network visualization. These include:
 * `direct`: Boolean value indicating whether or not the network is directed or not.
@@ -76,7 +76,7 @@ ggnet(net, direct = TRUE, title = 'Network graph with attributes',
     names = 'vertex.names')
 ```
 
-![Network graph with attributes](https://github.com/mhoover/ggnet/images/attribute_graph.jpg 'Network graph with attributes')
+![Network graph with attributes](https://github.com/mhoover/ggnet/blob/master/images/attribute_graph.jpg 'Network graph with attributes')
 
 # Additional information
 The underlying graphing capabilities make extensive use of `ggplot2` therefore, knowledge of `ggplot2` is helpful in terms of developing new features or tweaking existing ones. Help on `ggplot2` is available [here](http://docs.ggplot2.org/current). For more information, contact matthew.a.hoover at gmail.com.
