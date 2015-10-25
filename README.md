@@ -78,5 +78,12 @@ ggnet(net, direct = TRUE, title = 'Network graph with attributes',
 
 ![Network graph with attributes](https://github.com/mhoover/ggnet/blob/master/images/attribute_graph.jpg 'Network graph with attributes')
 
+# Example data
+An example network is included with various node (vertex) attributes that can be used to modify the visualization. It is a network-class object in R and will require the `statnet` (or `network`) package to be able to properly access its data. Working with network-class objects can be a little tricky, so please refer to [the manual](https://cran.r-project.org/web/packages/network/network.pdf) on CRAN.
+
+# Known issues
+1. With directed graphs, the arrow ends on edges are parially obscured/hidden by the nodes. 
+2. Input data is limited to network-class objects at the current time.
+
 # Additional information
 The underlying graphing capabilities make extensive use of `ggplot2` therefore, knowledge of `ggplot2` is helpful in terms of developing new features or tweaking existing ones. Help on `ggplot2` is available [here](http://docs.ggplot2.org/current). For more information, contact matthew.a.hoover at gmail.com.
