@@ -2,7 +2,14 @@
 ggnet was created to do network visualization using the `ggplot2` package in R. It is intended to create prettier network visualizations than base R graphics, with an array of color themes and attributes, such as node size, color, shape, and directed/undirected edges. It is a work-in-progress. 
 
 # Usage
-Currently, ggnet consists of two R functions, but will (hopefully) be turned into an actual package at some point. To start, the actual `ggnet` function requires input data to be a network-class object from the `statnet` package. Most types of network data, including edgelists and matrices, can be converted to an network class object with little trouble.
+~~Currently, ggnet consists of two R functions, but will (hopefully) be turned into an actual package at some point.~~ ggnet is now an R package hosted on GitHub. To install, you can do the following:
+
+```r
+library(devtools)
+install_github('mhoover/ggnet/ggnet')
+```
+
+The actual `ggnet` function requires input data to be a network-class object from the `statnet` package. Most types of network data, including edgelists and matrices, can be converted to an network class object with little trouble.
 
 ```r
 library(statnet)
