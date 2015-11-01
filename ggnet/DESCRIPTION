@@ -1,0 +1,17 @@
+Package: ggnet
+Title: Network Visualization using the ggplot2 Package
+Version: 0.2.0
+Authors@R: person("Matthew", "Hoover", email = "matthew.a.hoover@gmail.com", role = c("aut", "cre"))
+Description: ggnet makes prettier network visualization using ggplot2 as the
+    underlying plotting architecture rather than base graphics as many of the
+    common social network pacakges do. It allows for an array of color themes and
+    attributes, such as node size, color, shape, and directed/undirected edges.
+Depends:
+    R (>= 2.14)
+Imports:
+    ggplot2 (>= 1.0.1),
+    statnet,
+    grid
+License: GPL-3
+LazyData: true
+RoxygenNote: 5.0.0.9000
