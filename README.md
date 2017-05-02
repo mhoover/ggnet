@@ -1,5 +1,5 @@
 # ggnet
-ggnet was created to do network visualization using the `ggplot2` package in R. It is intended to create prettier network visualizations than base R graphics, with an array of color themes and attributes, such as node size, color, shape, and directed/undirected edges. It is a work-in-progress. 
+ggnet was created to do network visualization using the `ggplot2` package in R. It is intended to create prettier network visualizations than base R graphics, with an array of color themes and attributes, such as node size, color, shape, and directed/undirected edges. It is a work-in-progress.
 
 # Usage
 ~~Currently, ggnet consists of two R functions, but will (hopefully) be turned into an actual package at some point.~~ ggnet is now an R package hosted on GitHub. To install, you can do the following:
@@ -14,8 +14,8 @@ The actual `ggnet` function requires input data to be a network-class object fro
 ```r
 library(statnet)
 
-d <- data.frame(sender = c(rep(1, 4), rep(2, 3), rep(3, 4), rep(4, 1)), 
-    receiver = c(sample(2:5, 4), sample(c(1, 3:5), 3), sample(c(1:2, 4:5), 
+d <- data.frame(sender = c(rep(1, 4), rep(2, 3), rep(3, 4), rep(4, 1)),
+    receiver = c(sample(2:5, 4), sample(c(1, 3:5), 3), sample(c(1:2, 4:5),
     4), sample(c(1:3, 5), 1)))
 
 net <- network(d)
@@ -33,28 +33,28 @@ However, there are a robust set of options to improve the aesthetics of the netw
 * `direct`: Boolean value indicating whether or not the network is directed or not.
   * Default is FALSE.
   * If TRUE, arrows will be added to the edges indicating sender/receiver.
-* `color`: Vertex attribute from network-class object (indicated in quotations, e.g., 'age'). 
-  * Default is NULL. 
-  * Should be inputted as a string. 
+* `color`: Vertex attribute from network-class object (indicated in quotations, e.g., 'age').
+  * Default is NULL.
+  * Should be inputted as a string.
   * Indicates nodes should be colored based on the age attribute of the node.
-* `names`: Vertex attribute from network-class object (indicated in quotations, e.g., 'vertex.names'). 
-  * Default is NULL. 
-  * Should be inputted as a string. 
+* `names`: Vertex attribute from network-class object (indicated in quotations, e.g., 'vertex.names').
+  * Default is NULL.
+  * Should be inputted as a string.
   * Indicates nodes should be labeled with the value of the vertex.names attribute (appears as a label directly above the node).
-* `shape`: Vertex attribute from network-class object (indicated in quotations, e.g., 'gender'). 
-  * Default is NULL. 
-  * Should be inputted as a string. 
+* `shape`: Vertex attribute from network-class object (indicated in quotations, e.g., 'gender').
+  * Default is NULL.
+  * Should be inputted as a string.
   * Indicates nodes should be shaped (i.e., circle, triangle, square, etc.) based on the gender attribute of the node.
-* `size`: Vertex attribute from network-class object (indicated in quotations, e.g., 'test.score'). 
-  * Default is NULL. 
+* `size`: Vertex attribute from network-class object (indicated in quotations, e.g., 'test.score').
+  * Default is NULL.
   * Should be inputted as a string.
   * Indicates nodes should be sized (i.e., smaller/larger) based on the test.score attribute of the node.
-* `edge.val`: Attribute to make edges differentially transparent, based on value. 
-  * Default is NULL. 
-  * This parameter should be read into the function as a matrix of numeric values 
+* `edge.val`: Attribute to make edges differentially transparent, based on value.
+  * Default is NULL.
+  * Should be inputted as a string.
   * It will convert the edge transparency from highly transparent (small value in matrix) to opaque (high value in matrix).
-* `title`: Provide a title to the visualization. 
-  * Default is NULL. 
+* `title`: Provide a title to the visualization.
+  * Default is NULL.
   * Should be inputted as a string.
 * `legend`: Boolean value to display legend of node/edge attributes used.
   * Default is FALSE.
@@ -79,7 +79,7 @@ However, there are a robust set of options to improve the aesthetics of the netw
   * Ranges from 0 (fully transparent) to 1 (opaque).
 
 ```r
-ggnet(net, direct = TRUE, title = 'Network graph with attributes', 
+ggnet(net, direct = TRUE, title = 'Network graph with attributes',
     names = 'vertex.names')
 ```
 
@@ -89,7 +89,7 @@ ggnet(net, direct = TRUE, title = 'Network graph with attributes',
 An example network is included with various node (vertex) attributes that can be used to modify the visualization. It is a network-class object in R and will require the `statnet` (or `network`) package to be able to properly access its data. Working with network-class objects can be a little tricky, so please refer to [the manual](https://cran.r-project.org/web/packages/network/network.pdf) on CRAN.
 
 # Known issues
-1. With directed graphs, the arrow ends on edges are parially obscured/hidden by the nodes. 
+1. With directed graphs, the arrow ends on edges are parially obscured/hidden by the nodes.
 2. Input data is limited to network-class objects at the current time.
 
 # Additional information

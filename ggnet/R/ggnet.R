@@ -5,10 +5,10 @@
 		if(empty) {
 			tmp <- net
 			add.edges(tmp, 1, 2)
-			return(coord_place(network = tmp, layout = layout, 
+			return(coord_place(network = tmp, layout = layout,
 				plot.layout = plot.layout))
 		} else {
-			return(coord_place(network = net, layout = layout, 
+			return(coord_place(network = net, layout = layout,
 				plot.layout = plot.layout))
 		}
 	}
@@ -18,10 +18,7 @@
 	el <- as.edgelist(net)
 	edges <- data.frame(nodes[el[, 1], ], nodes[el[, 2], ])
 	if(!is.null(edge.val)) {
-		if(!direct) {
-			edge.val[upper.tri(edge.val)] <- 0
-		}
-		edges$val <- c(edge.val[edge.val > 0])
+		edges$val <- net %e% edge.val
 	} else {
 		edges$val <- 2
 	}
@@ -69,63 +66,69 @@
 	return(ifelse(length(unique(df[, attr])) == 1, 'none', 'legend'))
 }
 
-.build_graph <- function(nodes, edges, size, alpha, palette, color, shape, 
-	title, gradient, col.show, shp.show, siz.show, arr.head, legend.place, 
+.build_graph <- function(nodes, edges, size, alpha, palette, color, shape,
+	title, gradient, col.show, shp.show, siz.show, arr.head, legend.place,
 	empty) {
-	graphic <- ggplot() 
+	graphic <- ggplot()
 	if(!empty) {
-		graphic <- graphic + 
-		    geom_segment(aes(x = x.beg, y = y.beg, xend = x.end, 
-				yend = y.end), data = edges, size = 0.35, 
-				color = 'grey', alpha = edges$val / max(edges$val), 
+		graphic <- graphic +
+		    geom_segment(aes(x = x.beg, y = y.beg, xend = x.end,
+				yend = y.end), data = edges, size = 0.35,
+				color = 'grey', alpha = edges$val / max(edges$val),
 				arrow = arrow(length = unit(arr.head, 'cm')))
 	}
-	graphic <- graphic + 
-		geom_point(aes(x, y, color = color, shape = shape, size = size), 
-			alpha = alpha, data = nodes)
+    if(!is.null(size)) {
+    	graphic <- graphic +
+    		geom_point(aes(x, y, color = color, shape = shape, size = size),
+    			alpha = alpha, data = nodes)
+    } else {
+        graphic <- graphic +
+            geom_point(aes(x, y, color = color, shape = shape), alpha = alpha,
+                       data = nodes)
+    }
 	if(gradient) {
-		graphic <- graphic + 
-			scale_color_gradient(low = 'blue', high = 'red', 
+		graphic <- graphic +
+			scale_color_gradient(low = 'blue', high = 'red',
 				name = color)
 	} else {
-		graphic <- graphic + 
-			scale_color_brewer(palette = palette, name = color, 
+		graphic <- graphic +
+			scale_color_brewer(palette = palette, name = color,
 				guide = col.show)
 	}
-	graphic <- graphic + 
-	    geom_text(aes(x, y, label = name, vjust = -1), data = nodes, 
-	    	size = 3, color = 'grey25') + 
-	    scale_size(name = size, guide = siz.show) + 
-	    scale_shape(name = shape, guide = shp.show) + 
-		scale_x_continuous(breaks = NULL) + 
-		scale_y_continuous(breaks = NULL) + 
-		labs(title = title) + 
-		theme(panel.background = element_rect(fill = 'white', 
-			color = NA), axis.title.x = element_blank(), 
-			axis.title.y = element_blank(), 
-			legend.position = legend.place, 
+	graphic <- graphic +
+	    geom_text(aes(x, y, label = name, vjust = -1), data = nodes,
+	    	size = 3, color = 'grey25') +
+	    scale_size(name = size, guide = siz.show) +
+	    scale_shape(name = shape, guide = shp.show) +
+		scale_x_continuous(breaks = NULL) +
+		scale_y_continuous(breaks = NULL) +
+		labs(title = title) +
+		theme(panel.background = element_rect(fill = 'white',
+			color = NA), axis.title.x = element_blank(),
+			axis.title.y = element_blank(),
+			legend.position = legend.place,
 			legend.background = element_rect(color = NA))
 	return(graphic)
 }
 
 ### public functions
 #' Set coordinates of nodes in network graph
-#' 
+#'
 #' Set coordinates of nodes using a variety of force-directed layout
 #' algorithms. Can be used within the main graphing function to create
-#' a random layout of nodes each time or be run independently to 
+#' a random layout of nodes each time or be run independently to
 #' ensure a consistent layout of nodes within a network during visualization.
 #' @param network This is a network-class object that is being plotted.
-#' @param layout Identifies the layout algorithm to use. Default is 
+#' @param layout Identifies the layout algorithm to use. Default is
 #' Fruchterman-Reingold.
-#' @param plot.layout Needed for certain layout types. Default is NULL. You 
+#' @param plot.layout Needed for certain layout types. Default is NULL. You
 #' can ignore.
 #' @keywords network, visualization, ggplot2
 #' @export
 #' @examples
 #' data(example_network)
 #' coords <- coord_place(net)
-coord_place <- function(network, layout = 'fruchtermanreingold', 
+coord_place <- function(network, layout = 'fruchtermanreingold',
 	plot.layout = NULL) {
 
 	# load dependencies
@@ -137,7 +140,7 @@ coord_place <- function(network, layout = 'fruchtermanreingold',
 	if(sum(as.matrix(network)) == 0) {
 		add.edges(network, 1, 2)
 	}
-	
+
 	# determine graph layout algorithm
 	graph.layout <- match.fun(paste('gplot.layout.', layout, sep = ''))
 
@@ -148,47 +151,47 @@ coord_place <- function(network, layout = 'fruchtermanreingold',
 }
 
 #' Graph social network using ggplot2
-#' 
-#' Plot a network visualization using ggplot2 as the underlying architecture. 
-#' The function can utilize a number of attributes for nodes and edges, can 
+#'
+#' Plot a network visualization using ggplot2 as the underlying architecture.
+#' The function can utilize a number of attributes for nodes and edges, can
 #' plot directed/undirected graphs, and utilize a variety of color schemes.
 #' @param net This is a network-class object that is being plotted.
-#' @param direct Boolean value identifying if the network is directed or not. 
+#' @param direct Boolean value identifying if the network is directed or not.
 #' Default is FALSE.
-#' @param color Identifies the attribute (as a string) to color nodes by. 
+#' @param color Identifies the attribute (as a string) to color nodes by.
 #' Default is NULL.
-#' @param names Identifies the attribute (as a string) to name nodes by. 
+#' @param names Identifies the attribute (as a string) to name nodes by.
 #' Default is NULL.
-#' @param shape Identifies the attribute (as a string) to shape nodes by. 
+#' @param shape Identifies the attribute (as a string) to shape nodes by.
 #' Default is NULL.
-#' @param size Identifies the attribute (as a string) to size nodes by. 
+#' @param size Identifies the attribute (as a string) to size nodes by.
 #' Default is NULL.
-#' @param edge.val A numeric matrix to make edges differentially transparent 
+#' @param edge.val A numeric matrix to make edges differentially transparent
 #' based on value. Default is NULL.
 #' @param title A string containing title of visualization. Default is NULL.
-#' @param legend Boolean value to indicate if a legend should be printed if 
+#' @param legend Boolean value to indicate if a legend should be printed if
 #' attributes are used. Default is FALSE.
-#' @param coords An optional specification of coordinates (from coord_place) 
+#' @param coords An optional specification of coordinates (from coord_place)
 #' for network. Default is NULL, which will produce a random layout of nodes.
-#' @param layout Specifies layout algorithm for nodes. Default is the 
+#' @param layout Specifies layout algorithm for nodes. Default is the
 #' Fruchterman-Reingold algorithm.
-#' @param plot.layout Needed for certain layout types. Default is NULL. You 
+#' @param plot.layout Needed for certain layout types. Default is NULL. You
 #' can ignore.
-#' @param palette Which ggplot2 color palette to use for plotting. Default 
+#' @param palette Which ggplot2 color palette to use for plotting. Default
 #' is 'Set1'.
 #' @param gradient Boolean value indicating if the 'color' attribute should be
 #' a gradient or distinct color set. Default is FALSE.
-#' @param alpha Numeric value from 0 to 1 to optionally change the transparency 
+#' @param alpha Numeric value from 0 to 1 to optionally change the transparency
 #' of color in the graph. Default is 1.
 #' @keywords network, visualization, ggplot2
 #' @export
 #' @examples
 #' data(example_network)
-#' plot <- ggnet(net, direct = TRUE, color = 'age', title = 'Network graph', 
+#' plot <- ggnet(net, direct = TRUE, color = 'age', title = 'Network graph',
 #'               names = 'vertex.names', gradient = TRUE)
-ggnet <- function(net, direct = FALSE, color = NULL, names = NULL, 
-	shape = NULL, size = NULL, edge.val = NULL, title = NULL, legend = FALSE, 
-	coords = NULL, layout = 'fruchtermanreingold', plot.layout = NULL, 
+ggnet <- function(net, direct = FALSE, color = NULL, names = NULL,
+	shape = NULL, size = NULL, edge.val = NULL, title = NULL, legend = FALSE,
+	coords = NULL, layout = 'fruchtermanreingold', plot.layout = NULL,
 	palette = 'Set1', gradient = FALSE, alpha = 1) {
 
 	# load dependencies
@@ -214,17 +217,17 @@ ggnet <- function(net, direct = FALSE, color = NULL, names = NULL,
 	# determine arrows for directed network
 	arr.head <- ifelse(direct == TRUE, .2, 0)
 
-	# determine legend 
+	# determine legend
 	legend.place <- ifelse(legend == TRUE, 'right', 'none')
 
 	# set legend attributes
 	col.show <- .set_legend_attr(nodes, 'color')
 	shp.show <- .set_legend_attr(nodes, 'shape')
 	siz.show <- .set_legend_attr(nodes, 'size')
-	
+
 	# create network plot
-	plot <- .build_graph(nodes, edges, size, alpha, palette, color, shape, 
-		title, gradient, col.show, shp.show, siz.show, arr.head, legend.place, 
+	plot <- .build_graph(nodes, edges, size, alpha, palette, color, shape,
+		title, gradient, col.show, shp.show, siz.show, arr.head, legend.place,
 		empty)
 
 	# return graph
