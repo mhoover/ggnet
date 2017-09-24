@@ -67,14 +67,14 @@
 }
 
 .build_graph <- function(nodes, edges, size, alpha, palette, color, shape,
-	title, gradient, col.show, shp.show, siz.show, arr.head, legend.place,
-	empty) {
+	edge.size, text.size, title, gradient, col.show, shp.show, siz.show,
+    arr.head, legend.place, empty) {
 	graphic <- ggplot()
 	if(!empty) {
 		graphic <- graphic +
 		    geom_segment(aes(x = x.beg, y = y.beg, xend = x.end,
-				yend = y.end), data = edges, size = 0.35,
-				color = 'grey', alpha = edges$val / max(edges$val),
+				yend = y.end), data = edges, size = edge.size,
+				color = 'grey65', alpha = edges$val / max(edges$val),
 				arrow = arrow(length = unit(arr.head, 'cm')))
 	}
     if(!is.null(size)) {
@@ -97,7 +97,7 @@
 	}
 	graphic <- graphic +
 	    geom_text(aes(x, y, label = name, vjust = -1), data = nodes,
-	    	size = 3, color = 'grey25') +
+	    	size = text.size, color = 'grey50') +
 	    scale_size(name = size, guide = siz.show) +
 	    scale_shape(name = shape, guide = shp.show) +
 		scale_x_continuous(breaks = NULL) +
@@ -190,9 +190,9 @@ coord_place <- function(network, layout = 'fruchtermanreingold',
 #' plot <- ggnet(net, direct = TRUE, color = 'age', title = 'Network graph',
 #'               names = 'vertex.names', gradient = TRUE)
 ggnet <- function(net, direct = FALSE, color = NULL, names = NULL,
-	shape = NULL, size = NULL, edge.val = NULL, title = NULL, legend = FALSE,
-	coords = NULL, layout = 'fruchtermanreingold', plot.layout = NULL,
-	palette = 'Set1', gradient = FALSE, alpha = 1) {
+	shape = NULL, size = NULL, edge.val = NULL, edge.size = .35, text.size = 3,
+    title = NULL, legend = FALSE, coords = NULL, layout = 'fruchtermanreingold',
+    plot.layout = NULL, palette = 'Set1', gradient = FALSE, alpha = 1) {
 
 	# load dependencies
 	require(ggplot2, quietly = TRUE)
@@ -227,8 +227,8 @@ ggnet <- function(net, direct = FALSE, color = NULL, names = NULL,
 
 	# create network plot
 	plot <- .build_graph(nodes, edges, size, alpha, palette, color, shape,
-		title, gradient, col.show, shp.show, siz.show, arr.head, legend.place,
-		empty)
+		edge.size, text.size, title, gradient, col.show, shp.show, siz.show,
+        arr.head, legend.place, empty)
 
 	# return graph
 	return(print(plot))
